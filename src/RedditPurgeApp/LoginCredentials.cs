@@ -26,6 +26,14 @@ namespace RedditPurge
         public string Password { get; set; }
 
         /// <summary>
+        /// Gets or sets the 2-FA backup code.
+        /// </summary>
+        /// <value>
+        /// The 2-FA backup code.
+        /// </value>
+        public string TwoFABackupCode { get; set; }
+
+        /// <summary>
         /// Determines whether this instance is empty.
         /// </summary>
         /// <returns>

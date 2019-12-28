@@ -13,7 +13,7 @@ namespace RedditPurge
             try
             {
                 var redditAutomation = new RedditAutomation(webDriver);
-                redditAutomation.Login(credentials.Username, credentials.Password);
+                redditAutomation.Login(credentials);
                 var stats = redditAutomation.PurgeAccount(credentials.Username);
                 OutputStatistics(stats);
             }
@@ -44,12 +44,15 @@ namespace RedditPurge
                 credentials.Username = Console.ReadLine();
                 Console.Write("Reddit password: ");
                 credentials.Password = ReadPassword('*');
+                Console.Write("Reddit 2-FA backup code (optional): ");
+                credentials.TwoFABackupCode = ReadPassword('*');
 
                 if (credentials.IsEmpty())
                 {
                     Console.WriteLine("You must enter both username and password. Try again.");
                 }
             }
+
             return credentials;
         }
 

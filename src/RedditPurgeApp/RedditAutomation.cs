@@ -24,19 +24,26 @@ namespace RedditPurge
         }
 
         /// <summary>
-        /// Loginto Reddit using the provided credentials.
+        /// Login to Reddit using the specified credentials.
         /// </summary>
-        /// <param name="username">The username.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="twoFactorAuthenticationSeed">The two factor authentication seed.</param>
-        public void Login(string username, string password, string twoFactorAuthenticationSeed = null)
+        /// <param name="credentials">The credentials.</param>
+        public void Login(LoginCredentials credentials)
         {
-            webDriver.Url = "https://www.reddit.com/login/?dest=https%3A%2F%2Fwww.reddit.com%2F";
+            webDriver.Url = "https://www.reddit.com/login";
             var input = webDriver.FindElement(By.Id("loginUsername"));
-            input.SendKeys(username);
+            input.SendKeys(credentials.Username);
 
             input = webDriver.FindElement(By.Id("loginPassword"));
-            input.SendKeys(password);
+            input.SendKeys(credentials.Password);
+
+            if (!string.IsNullOrWhiteSpace(credentials.TwoFABackupCode))
+            {
+                // 2-Factor-Authentication - use the provided backup code
+                webDriver.WaitUntilElementExistsAndClickable(By.ClassName("AnimatedForm__submitButton")).Click();
+                webDriver.WaitUntilElementExistsAndClickable(By.XPath($"//span[.='Use a backup code']")).Click();
+                input = webDriver.FindElement(By.Id("loginOtp"));
+                input.SendKeys(credentials.TwoFABackupCode);
+            }
 
             webDriver.ClickAndWaitForPageToLoad(By.ClassName("AnimatedForm__submitButton"));
         }
