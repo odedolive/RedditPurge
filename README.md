@@ -18,7 +18,7 @@ It's also worth noting that the *internet never forgets*, and there are several 
 
 ## How to use
 1. You can check out the code, and run it from source
-2. Download the compiled binaries (windows) from the **Release** tab (coming soon)
+2. Download the compiled binaries (windows) from the [Release](https://github.com/odedolive/RedditPurge/releases) tab.
 
 ### Steps to Compile From Source
 You will need to download and install the .NET Core 3.1 SDK  
