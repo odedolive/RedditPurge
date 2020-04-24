@@ -12,17 +12,31 @@ namespace RedditPurge
         /// <summary>
         /// Gets or sets the number of deleted posts.
         /// </summary>
-        /// <value>
-        /// The number of deleted posts.
-        /// </value>
         public int DeletedPosts { get; set; }
 
         /// <summary>
         /// Gets or sets the number of deleted comments.
         /// </summary>
-        /// <value>
-        /// The number of deleted comments.
-        /// </value>
         public int DeletedComments { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of unsaved posts
+        /// </summary>
+        public int UnsavedPosts { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of "unhidden" posts
+        /// </summary>
+        public int UnhiddenPosts { get; set; }
+
+        /// <summary>
+        /// GEts or sets the number of posts that thier upvote was undone
+        /// </summary>
+        public int UnUpvote { get; set; }
+
+        /// <summary>
+        /// GEts or sets the number of posts that thier downvote was undone
+        /// </summary>
+        public int UnDownvote { get; set; }
     }
 }

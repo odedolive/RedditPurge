@@ -40,7 +40,7 @@ namespace RedditPurge
             {
                 // 2-Factor-Authentication - use the provided backup code
                 webDriver.WaitUntilElementExistsAndClickable(By.ClassName("AnimatedForm__submitButton")).Click();
-                webDriver.WaitUntilElementExistsAndClickable(By.XPath($"//span[.='Use a backup code']")).Click();
+                webDriver.WaitUntilElementExistsAndClickable(By.ClassName("switch-otp-type")).Click();
                 input = webDriver.FindElement(By.Id("loginOtp"));
                 input.SendKeys(credentials.TwoFABackupCode);
             }
@@ -55,8 +55,12 @@ namespace RedditPurge
         public PurgeStatistics PurgeAccount(string username)
         {
             var stats = new PurgeStatistics();
-            stats.DeletedPosts = DeleteAll($"https://www.reddit.com/user/{username}/posts", "Delete Post");
-            stats.DeletedComments = DeleteAll($"https://www.reddit.com/user/{username}/comments", "Delete");
+            stats.DeletedPosts = DeleteAll($"https://www.reddit.com/user/{username}/posts", "delete post");
+            stats.DeletedComments = DeleteAll($"https://www.reddit.com/user/{username}/comments", "delete");
+            stats.UnsavedPosts = SimpleActions($"https://www.reddit.com/user/{username}/saved", "unsave");
+            stats.UnhiddenPosts = SimpleActions($"https://www.reddit.com/user/{username}/hidden", "unhide");
+            stats.UnUpvote = UpOrDownvoteActions($"https://www.reddit.com/user/{username}/upvoted", "icon-upvote");
+            stats.UnDownvote = UpOrDownvoteActions($"https://www.reddit.com/user/{username}/downvoted", "icon-downvote");
             return stats;
         }
 
@@ -101,6 +105,58 @@ namespace RedditPurge
                 
                 webDriver.Url = webDriver.Url; // refresh page
             } while (moreOptionsButtons.Count() > 1);
+
+            return counter;
+        }
+
+        private int SimpleActions(string url, string action)
+        {
+            webDriver.Url = url;
+
+            int counter = 0;
+            IEnumerable<IWebElement> actions = null;
+            do
+            {
+                actions = webDriver.FindElements(By.XPath($"//span[.='{action}']"));
+                foreach (var button in actions)
+                {
+                    try
+                    {
+                        webDriver.WaitUntil(_ => button.Enabled);
+                        button.Click();
+                        counter++;
+                    }
+                    catch { }
+                }
+
+                webDriver.Url = webDriver.Url; // refresh page
+            } while (actions.Count() > 0);
+
+            return counter;
+        }
+
+        private int UpOrDownvoteActions(string url, string action)
+        {
+            webDriver.Url = url;
+
+            int counter = 0;
+            IEnumerable<IWebElement> actions = null;
+            do
+            {
+                actions = webDriver.FindElements(By.ClassName(action));
+                foreach (var button in actions)
+                {
+                    try
+                    {
+                        webDriver.WaitUntil(_ => button.Enabled);
+                        button.Click();
+                        counter++;
+                    }
+                    catch { }
+                }
+
+                webDriver.Url = webDriver.Url; // refresh page
+            } while (actions.Count() > 0);
 
             return counter;
         }

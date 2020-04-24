@@ -67,6 +67,10 @@ namespace RedditPurge
             Console.WriteLine(" Account Purge Statistics:");
             Console.WriteLine($" {stats.DeletedPosts} deleted posts.");
             Console.WriteLine($" {stats.DeletedComments} deleted comments.");
+            Console.WriteLine($" {stats.UnsavedPosts} unsaved posts.");
+            Console.WriteLine($" {stats.UnhiddenPosts} unhidden posts.");
+            Console.WriteLine($" {stats.UnUpvote} upvote undone.");
+            Console.WriteLine($" {stats.UnDownvote} downvotes undone.");
             Console.WriteLine();
             Console.WriteLine(" The internet never forgets...");
             Console.WriteLine();
